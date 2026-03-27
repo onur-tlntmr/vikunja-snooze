@@ -20,18 +20,39 @@ async def process_webhook(payload: VikunjaWebhookPayload):
     if task.due_date:
         message += f"\nDue Date: {task.due_date}"
 
-    # Action buttons for Ntfy
+    # Ntfy and Android support max 3 action buttons.
+    # We add Markdown links to the message body for the full list of snooze options.
+    snooze_options = [
+        ("5m", 5), ("15m", 15), ("30m", 30), 
+        ("1h", 60), ("4h", 240), ("6h", 360), 
+        ("12h", 720), ("1d", 1440)
+    ]
+    
+    md_links = " | ".join(
+        [f"[{label}]({action_base_url}/actions/snooze?task_id={task.id}&minutes={mins})" for label, mins in snooze_options]
+    )
+    
+    message += f"\n\n**Snooze Options:**\n{md_links}\n"
+    message += f"**Complete:** [Mark Task Done]({action_base_url}/actions/complete?task_id={task.id})"
+
+    # Action buttons for Ntfy (Limited to 3)
     actions = [
         {
             "action": "http",
-            "label": "Completed",
+            "label": "Complete",
             "url": f"{action_base_url}/actions/complete?task_id={task.id}",
             "method": "POST"
         },
         {
             "action": "http",
-            "label": "Snooze (15m)",
+            "label": "Snooze 15m",
             "url": f"{action_base_url}/actions/snooze?task_id={task.id}&minutes=15",
+            "method": "POST"
+        },
+        {
+            "action": "http",
+            "label": "Snooze 1d",
+            "url": f"{action_base_url}/actions/snooze?task_id={task.id}&minutes=1440",
             "method": "POST"
         }
     ]
