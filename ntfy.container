@@ -1,0 +1,17 @@
+[Unit]
+Description=Ntfy Push Notification Service
+After=network-online.target
+
+[Container]
+Image=docker.io/binwiederhier/ntfy:latest
+Command=serve --cache-file /var/cache/ntfy/cache.db
+Volume=%h/Development/personal/vikunja-snooze/ntfy-data:/var/cache/ntfy:Z
+PublishPort=8080:80
+
+# Environment configurations
+Environment=NTFY_BASE_URL=http://localhost:8080
+# You can set AUTH here if needed later.
+
+[Install]
+WantedBy=default.target
+WantedBy=multi-user.target
