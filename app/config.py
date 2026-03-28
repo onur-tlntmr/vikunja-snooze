@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     vikunja_api_token: str = ""
     ntfy_url: str = "http://localhost:8080/vikunja"
     action_base_url: str
+    action_scheme: str = "http"
     log_level: str = "INFO"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
