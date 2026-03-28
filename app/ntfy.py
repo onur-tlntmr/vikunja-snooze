@@ -67,7 +67,9 @@ class NtfyClient:
 
     @staticmethod
     def _encode_header_value(value: str) -> str:
-        return value.encode("utf-8").decode("iso-8859-1", errors="ignore")
+        import base64
+        encoded = base64.b64encode(value.encode("utf-8")).decode("ascii")
+        return f"=?utf-8?b?{encoded}?="
 
 
 ntfy_client = NtfyClient()
