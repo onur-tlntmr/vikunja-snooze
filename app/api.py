@@ -9,7 +9,7 @@ router = APIRouter()
 
 @router.post("/webhook")
 async def receive_webhook(request: Request, payload: VikunjaWebhookPayload):
-    logger.info("Received Vikunja Webhook", event=payload.event_name)
+    logger.info("Received Vikunja Webhook", webhook_event=payload.event_name)
     try:
         await notification_service.process_webhook(payload)
         return {"status": "success"}
