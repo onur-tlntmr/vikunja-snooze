@@ -5,10 +5,12 @@ After=network-online.target
 [Container]
 # Make sure to build the image first: podman build -t vikunja-webhook:latest .
 Image=localhost/vikunja-webhook:latest
+ContainerName=vikunja-webhook
+Network=srv-net
 PublishPort=8000:8000
 
 # Optional depending on how environment variables are passed
-EnvironmentFile=%h/Development/personal/vikunja-snooze/.env
+EnvironmentFile=%h/vikunja-snooze/.env
 
 [Install]
 WantedBy=default.target

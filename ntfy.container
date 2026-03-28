@@ -4,8 +4,10 @@ After=network-online.target
 
 [Container]
 Image=docker.io/binwiederhier/ntfy:latest
-Command=serve --cache-file /var/cache/ntfy/cache.db
-Volume=%h/Development/personal/vikunja-snooze/ntfy-data:/var/cache/ntfy:Z
+ContainerName=ntfy
+Exec=serve --cache-file /var/cache/ntfy/cache.db
+Volume=%h/vikunja-snooze/ntfy-data:/var/cache/ntfy:Z
+Network=srv-net
 PublishPort=8080:80
 
 # Environment configurations
