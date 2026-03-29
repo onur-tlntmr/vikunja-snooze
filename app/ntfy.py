@@ -18,6 +18,8 @@ class NtfyClient:
     ) -> None:
         headers = {
             "Title": self._encode_header_value(title),
+            "X-Markdown": "yes",
+            "Priority": "high",
         }
 
         if actions:

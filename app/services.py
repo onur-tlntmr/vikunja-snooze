@@ -31,27 +31,8 @@ async def process_webhook(payload: VikunjaWebhookPayload):
     if task.description:
         body_lines.append(f"\n{task.description}")
 
-    body_lines.append("\n---")
-    body_lines.append("**Snooze Options:**")
-    
-    snooze_options = [
-        ("5m", 5), ("15m", 15), ("30m", 30), ("1h", 60),
-        ("4h", 240), ("6h", 360), ("12h", 720), ("1d", 1440)
-    ]
-    
-    # Group snooze options in rows of 4
-    rows = []
-    for i in range(0, len(snooze_options), 4):
-        chunk = snooze_options[i:i+4]
-        row = " · ".join(
-            [f"[{label}]({get_action_url(f'/actions/snooze?task_id={task.id}&minutes={mins}')})" 
-             for label, mins in chunk]
-        )
-        rows.append(row)
-    
-    body_lines.extend(rows)
-    body_lines.append("---")
-    body_lines.append(f"[✅ Mark Task Done]({get_action_url(f'/actions/complete?task_id={task.id}')})")
+    # No snooze options in the body text anymore.
+
     
     message = "\n".join(body_lines)
 
@@ -71,8 +52,8 @@ async def process_webhook(payload: VikunjaWebhookPayload):
         },
         {
             "action": "http",
-            "label": "Snooze 1d",
-            "url": get_action_url(f"/actions/snooze?task_id={task.id}&minutes=1440"),
+            "label": "Snooze 1h",
+            "url": get_action_url(f"/actions/snooze?task_id={task.id}&minutes=60"),
             "method": "POST"
         }
     ]
